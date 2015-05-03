@@ -16,27 +16,25 @@
 # for his xbmc-vdpau-vdr PKGBUILD at https://archvdr.svn.sourceforge.net/svnroot/archvdr/trunk/archvdr/xbmc-vdpau-vdr/PKGBUILD
 
 pkgname=xbmc-odroid
-pkgver=1
+pkgver=20150326.7cc53a9
 pkgrel=1
-pkgdesc="XBMC Media Center Gotham mfc Odroid"
+pkgdesc="Kodi 14.2 Helix for Odroid"
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-pulse' 'xbmc-svn')
 replaces=('xbmc-svn')
 arch=('armv7h')
-url="http://xbmc.org"
+url="http://kodi.tv"
 license=('GPL2')
 depends=(
-'alsa-lib' 'avahi' 'bluez' 'bzip2' 'curl' 'ccache' 'cwiid' 'enca' 'ffmpeg' 'flac' 'fontconfig' 'freetype2' 'fribidi'
-'glew' 'glu' 'hicolor-icon-theme' 'jre7-openjdk' 'lame' 'libaacs' 'libao' 'libass' 'libbluray' 'libcap' 'libcdio'
-'libcec' 'libdbus' 'libjpeg-turbo' 'libltdl' 'libmad' 'libmariadbclient' 'libmicrohttpd' 'libmodplug' 'libmpeg2'
-'libpng' 'libpng12' 'libpulse' 'libtiff' 'libsamplerate' 'libsystemd' 'libssh' 'libusb' 'libva' 'libvdpau' 'libvorbis'
-'libxinerama' 'libxml2' 'libxmu' 'libxrandr' 'libxslt' 'libxt' 'lsb-release' 'lzo' 'mesa' 'mysql' 'odroid-libgl'
-'pcre' 'python2' 'python2-pillow' 'python2-simplejson' 'rtmpdump' 'sdl' 'sdl_image' 'sdl_mixer' 'smbclient' 'sqlite'
-'taglib' 'tinyxml' 'xorg-xdpyinfo' 'xorg-util-macros' 'yajl' 'zlib'
+'alsa-lib' 'avahi' 'bluez-libs' 'bzip2' 'flac' 'freetype2' 'fribidi' 'libcap' 'libcdio'
+'libdbus' 'libjpeg-turbo' 'libmariadbclient' 'libmicrohttpd' 'libpng' 'libpulse'
+'libtiff' 'libsystemd' 'libssh' 'libusb' 'libva' 'libvorbis' 'libxml2' 'libxrandr'
+'libxslt' 'lzo' 'mesa' 'pcre' 'python' 'python2' 'sdl' 'sdl_image' 'smbclient' 'sqlite'
+'taglib' 'tinyxml' 'yajl' 'zlib'
 )
 makedepends=(
-'afpfs-ng' 'boost' 'cmake' 'doxygen' 'git' 'gperf' 'jasper'
-'java-runtime' 'libnfs' 'libplist' 'nasm' 'shairplay'
+'boost' 'cmake' 'doxygen' 'git' 'gperf' 'jasper'
+'java-runtime' 'libnfs' 'libplist' 'nasm'
 'swig' 'unzip' 'upower' 'zip'
 )
 optdepends=(
@@ -53,32 +51,24 @@ optdepends=(
 'upower: Display battery level'
 )
 install="$pkgname.install"
-_commit=eac52eff4783b5cddd9aa9733fc039404a776068
+_commit=7cc53a9a3da77869d1d5d3d3d9971b4bd1641b50
 source=(
-	"git+https://github.com/hreikin/xbmc-odroid.git#branch=Gotham-mfc-devel"
+	"git+https://github.com/xbmc/xbmc.git#tag=14.2-Helix"
 )
 sha256sums=(
 	'SKIP'
 )
 
-_prefix='/usr'
+_prefix='/usr/local'
 
 pkgver() {
-	cd "$srcdir/$pkgname"
+	cd "$srcdir/xbmc"
 	# suggested by marzoul
 	git log -1 --date=short --format="%cd.%h" | tr -d '-'
 }
 
-prepare() {
-	cd ${pkgname}
-
-	find -type f -name *.py -exec sed 's|^#!.*python$|#!/usr/bin/python2|' -i "{}" +
-	sed 's|^#!.*python$|#!/usr/bin/python2|' -i tools/depends/native/rpl-native/rpl
-	sed 's/python/python2/' -i tools/Linux/xbmc.sh.in
-}
-
 build() {
-	cd ${pkgname}
+	cd xbmc
 
 	# Bootstrapping
 	./bootstrap
@@ -86,7 +76,6 @@ build() {
 	# Configuring XBMC
 	export PYTHON_VERSION="2.7"  # external python v2
 	./configure --enable-codec=mfc \
-		--enable-libcec \
 		--enable-x11 \
 		--enable-sdl \
 		--enable-xrandr \
@@ -114,18 +103,19 @@ build() {
 }
 
 package() {
-	cd ${pkgname}
+	cd xbmc
+
 	# Running make install
 	make DESTDIR="$pkgdir" install
 
 	# Tools
-	install -Dm755 $srcdir/$pkgname/tools/TexturePacker/TexturePacker \
+	install -Dm755 $srcdir/xbmc/tools/TexturePacker/TexturePacker \
 		${pkgdir}${_prefix}/lib/xbmc/
 
 	# Licenses
 	install -dm755 ${pkgdir}${_prefix}/share/licenses/${pkgname}
 	for licensef in LICENSE.GPL copying.txt; do
-		mv ${pkgdir}${_prefix}/share/doc/xbmc/${licensef} \
+		mv ${pkgdir}${_prefix}/share/doc/kodi/${licensef} \
 			${pkgdir}${_prefix}/share/licenses/${pkgname}
 	done
 }
