@@ -17,7 +17,7 @@
 
 pkgname=xbmc-odroid
 pkgver=20150326.7cc53a9
-pkgrel=2
+pkgrel=1
 pkgdesc="Kodi 14.2 Helix for Odroid"
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-pulse' 'xbmc-svn')
@@ -59,7 +59,7 @@ sha256sums=(
 	'SKIP'
 )
 
-_prefix='/usr'
+_prefix='/usr/local'
 
 pkgver() {
 	cd "$srcdir/xbmc"
@@ -75,8 +75,7 @@ build() {
 
 	# Configuring XBMC
 	export PYTHON_VERSION="2.7"  # external python v2
-	./configure --prefix=${_prefix} \
-		--enable-codec=mfc \
+	./configure --enable-codec=mfc \
 		--enable-x11 \
 		--enable-sdl \
 		--enable-xrandr \
