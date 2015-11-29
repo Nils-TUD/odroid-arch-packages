@@ -5,17 +5,40 @@ buildarch=4
 
 pkgname=odroid-libgl-mali
 pkgver=r4p0
-pkgrel=1.1
+pkgrel=1.2
+mesaver=11.0.6
 arch=('armv7h')
 pkgdesc="ODROID Mali GL Driver"
 url="http://www.hardkernel.com/"
 license=('Proprietary')
 provides=('libegl' 'libgles' 'libMali')
-source=("http://builder.mdrjr.net/tools/mali-${pkgver}.txz")
-md5sums=('f88d6db219d2edfbbf7b2e4e816e4d57')
+depends=("mesa-noegl=${mesaver}")
+source=(
+	"http://builder.mdrjr.net/tools/mali-${pkgver}.txz"
+	"ftp://ftp.freedesktop.org/pub/mesa/${mesaver}/mesa-${mesaver}.tar.xz"
+)
+md5sums=(
+	'f88d6db219d2edfbbf7b2e4e816e4d57'
+	'0403559c2882218adf37962d562800f1'
+)
 
 package() {
     install -d -m 0755 ${pkgdir}/usr/lib
+    install -d -m 0755 ${pkgdir}/usr/include
+
+    cd ${srcdir}/?esa-*
+    install -d -m 0755 ${pkgdir}/usr/include/EGL
+    install -d -m 0755 ${pkgdir}/usr/include/GLES
+    install -d -m 0755 ${pkgdir}/usr/include/GLES2
+    install -d -m 0755 ${pkgdir}/usr/include/GLES3
+    install -d -m 0755 ${pkgdir}/usr/include/KHR
+    install -d -m 0755 ${pkgdir}/usr/include/d3dadapter
+    install -m 0644 include/EGL/* ${pkgdir}/usr/include/EGL
+    install -m 0644 include/GLES/* ${pkgdir}/usr/include/GLES
+    install -m 0644 include/GLES2/* ${pkgdir}/usr/include/GLES2
+    install -m 0644 include/GLES3/* ${pkgdir}/usr/include/GLES3
+    install -m 0644 include/KHR/* ${pkgdir}/usr/include/KHR
+    install -m 0644 include/d3dadapter/* ${pkgdir}/usr/include/d3dadapter
 
     cd ${srcdir}/mali
     install -m 0755 libMali.so ${pkgdir}/usr/lib
