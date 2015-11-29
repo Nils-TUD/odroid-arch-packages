@@ -4,8 +4,8 @@
 
 _pkgbase=xorg-server
 pkgname=('xorg-server-dsd' 'xorg-server-xephyr-dsd' 'xorg-server-xdmx-dsd' 'xorg-server-xvfb-dsd' 'xorg-server-xnest-dsd' 'xorg-server-common-dsd' 'xorg-server-devel-dsd')
-pkgver=1.16.0
-pkgrel=6.1 # build first with 0.1 and then rebuild it after xf86-input-evdev rebuild
+pkgver=1.18.0
+pkgrel=7.1 # build first with 0.1 and then rebuild it after xf86-input-evdev rebuild
 arch=('any')
 license=('custom')
 url="http://xorg.freedesktop.org"
@@ -14,27 +14,26 @@ makedepends=('pixman' 'libx11' 'mesa' 'mesa-libgl' 'xf86driproto' 'xcmiscproto' 
              'resourceproto' 'xineramaproto' 'libxkbfile' 'libxfont' 'renderproto' 'libpciaccess' 'libxv'
              'xf86dgaproto' 'libxmu' 'libxrender' 'libxi' 'dmxproto' 'libxaw' 'libdmx' 'libxtst' 'libxres'
              'xorg-xkbcomp' 'xorg-util-macros' 'xorg-font-util' 'glproto' 'dri2proto' 'libgcrypt' 'libepoxy'
-             'xcb-util' 'xcb-util-image' 'xcb-util-wm' 'xcb-util-keysyms' 'dri3proto' 'libxshmfence') 
+             'xcb-util' 'xcb-util-image' 'xcb-util-wm' 'xcb-util-keysyms' 'xcb-util-renderutil' 'dri3proto'
+	     'libxshmfence') 
 source=(${url}/releases/individual/xserver/${_pkgbase}-${pkgver}.tar.bz2
         autoconfig-nvidia.patch
         autoconfig-sis.patch
-        glamor-upstream-fix.patch
         nvidia-drm-outputclass.conf
         xvfb-run
         xvfb-run.1
         10-quirks.conf
         CVE-2013-6424.diff
 	dsd.patch)
-sha256sums=('38330a03c5f7a38745a3f9816cf069db5b8844eebb358fd39dbabf61f32cd06b'
+sha256sums=('195670819695d9cedd8dde95fbe069be0d0f488a77797a2d409f9f702daf312e'
             '66e25f76a7496c429e0aff4b0670f168719bb0ceaeb88c6f2272f2bf3ed21162'
             'd027776fac1f7675b0a9ee817502290b1c45f9c09b0f0a6bb058c35f92361e84'
-	    'fbd898f0e867c77c9bf918fd2e7956c7776ecb3cc3634c61290fb03513b47987'
 	    'af1c3d2ea5de7f6a6b5f7c60951a189a4749d1495e5462f3157ae7ac8fe1dc56'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776'
             '94612f5c0d34a3b7152915c2e285c7b462e9d8e38d3539bd551a339498eac166'
             '89948993afd4d9aec6a0bdbaf62f494e9956bb77a0386307d497f340a818ff61'
-	    'a58a34c95397dde79eecc72d8a7e403769b45b8aef2cee6c56c0f5562fde1284' )
+	    '744800f5ad2dce2013364ed54ab9dfff0b700ca9a6b046fd6d945a3bb48b3fa3' )
 
 prepare() {
   cd "${_pkgbase}-${pkgver}"
@@ -44,8 +43,6 @@ prepare() {
   # this means that older drivers (304xx and before) aren't currently supported
   # Use nouveau/nv/nvidia drivers for nvidia devices
   patch -Np1 -i ../autoconfig-nvidia.patch
-  # merged upstream (1.16 branch)
-  patch -Np1 -i ../glamor-upstream-fix.patch
 
   # Fix CVE-2013-6424 (FS#38401)
   patch -Np1 -i ../CVE-2013-6424.diff
@@ -119,7 +116,7 @@ package_xorg-server-dsd() {
   backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
   # see xorg-server-*/hw/xfree86/common/xf86Module.h for ABI versions - we provide major numbers that drivers can depend on
   # and /usr/lib/pkgconfig/xorg-server.pc in xorg-server-devel pkg
-  provides=('X-ABI-VIDEODRV_VERSION=18' 'X-ABI-XINPUT_VERSION=21' 'X-ABI-EXTENSION_VERSION=8.0' 'x-server' 'xorg-server')
+  provides=('X-ABI-VIDEODRV_VERSION=20' 'X-ABI-XINPUT_VERSION=22.1' 'X-ABI-EXTENSION_VERSION=9.0' 'x-server' 'xorg-server')
   groups=('xorg')
   conflicts=('nvidia-utils<=331.20' 'xorg-server' 'glamour-egl')
   replaces=('glamor-egl')
