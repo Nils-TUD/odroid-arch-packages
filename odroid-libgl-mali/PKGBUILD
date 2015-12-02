@@ -4,7 +4,7 @@
 buildarch=4
 
 pkgname=odroid-libgl-mali
-pkgver=r4p0
+pkgver=r5p0
 pkgrel=1.2
 mesaver=11.0.6
 arch=('armv7h')
@@ -14,11 +14,11 @@ license=('Proprietary')
 provides=('libegl' 'libgles' 'libMali')
 depends=("mesa-noegl=${mesaver}")
 source=(
-	"http://builder.mdrjr.net/tools/mali-${pkgver}.txz"
+	"http://builder.mdrjr.net/tools/u3/4412_${pkgver}_x11.tar.xz"
 	"ftp://ftp.freedesktop.org/pub/mesa/${mesaver}/mesa-${mesaver}.tar.xz"
 )
 md5sums=(
-	'f88d6db219d2edfbbf7b2e4e816e4d57'
+	'fd096d1fc0762fe8e799a9c78c259f36'
 	'0403559c2882218adf37962d562800f1'
 )
 
@@ -40,7 +40,7 @@ package() {
     install -m 0644 include/KHR/* ${pkgdir}/usr/include/KHR
     install -m 0644 include/d3dadapter/* ${pkgdir}/usr/include/d3dadapter
 
-    cd ${srcdir}/mali
+    cd ${srcdir}/
     install -m 0755 libMali.so ${pkgdir}/usr/lib
 
     cd ${pkgdir}/usr/lib
