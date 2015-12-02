@@ -17,7 +17,7 @@
 
 pkgname=xbmc-odroid
 pkgver=20150326.7cc53a9
-pkgrel=1
+pkgrel=2
 pkgdesc="Kodi 14.2 Helix for Odroid"
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-pulse' 'xbmc-svn')
@@ -26,11 +26,15 @@ arch=('armv7h')
 url="http://kodi.tv"
 license=('GPL2')
 depends=(
-'alsa-lib' 'avahi' 'bluez-libs' 'bzip2' 'flac' 'freetype2' 'fribidi' 'libcap' 'libcdio'
-'libdbus' 'libjpeg-turbo' 'libmariadbclient' 'libmicrohttpd' 'libpng' 'libpulse'
-'libtiff' 'libsystemd' 'libssh' 'libusb' 'libva' 'libvorbis' 'libxml2' 'libxrandr'
-'libxslt' 'lzo' 'mesa' 'pcre' 'python' 'python2' 'sdl' 'sdl_image' 'smbclient' 'sqlite'
-'taglib' 'tinyxml' 'yajl' 'zlib'
+'alsa-lib' 'attr' 'avahi' 'bluez-libs' 'bzip2' 'e2fsprogs' 'flac' 'freetype2' 'fribidi'
+'gcc-libs' 'gnutls' 'glib2' 'glibc' 'gmp' 'graphite' 'harfbuzz' 'json-c' 'ldb' 'libasyncns'
+'libbsd' 'libcap' 'libcdio' 'libdbus' 'libdrm' 'libffi' 'libgcrypt' 'libgpg-error'
+'libjpeg-turbo' 'libldap' 'libmariadbclient' 'libmicrohttpd' 'libogg' 'libpng' 'libpulse'
+'libsasl' 'libsndfile' 'libssh' 'libsystemd' 'libtasn1' 'libtiff' 'libusb' 'libva' 'libvorbis'
+'libwbclient' 'libx11' 'libxau' 'libxcb' 'libxdmcp' 'libxext' 'libxfixes' 'libxml2' 'libxrandr'
+'libxrender' 'libxslt' 'lz4' 'lzo' 'mesa' 'nettle' 'odroid-libgl-mali' 'openssl' 'p11-kit'
+'pcre' 'python' 'python2' 'sdl' 'sdl_image' 'smbclient' 'sqlite' 'taglib' 'talloc' 'tdb'
+'tevent' 'tinyxml' 'xz' 'yajl' 'zlib'
 )
 makedepends=(
 'boost' 'cmake' 'doxygen' 'git' 'gperf' 'jasper'
