@@ -17,7 +17,7 @@
 
 pkgname=xbmc-odroid
 pkgver=20150326.7cc53a9
-pkgrel=2
+pkgrel=3
 pkgdesc="Kodi 14.2 Helix for Odroid"
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-pulse' 'xbmc-svn')
